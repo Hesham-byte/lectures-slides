@@ -1,0 +1,1189 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lecture Slides Portal</title>
+  <meta name="description" content="Interactive presentation slide decks for Computer Science and Information Technology.">
+  <style>
+    :root {
+      --bg: #090d16;
+      --bg-gradient: radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+                         radial-gradient(circle at 85% 20%, rgba(99, 102, 241, 0.1) 0%, transparent 45%),
+                         radial-gradient(circle at 50% 90%, rgba(168, 85, 247, 0.06) 0%, transparent 50%),
+                         #090d16;
+      --surface: rgba(19, 26, 42, 0.75);
+      --surface-hover: rgba(28, 38, 62, 0.85);
+      --surface-border: rgba(255, 255, 255, 0.08);
+      --surface-border-hover: rgba(56, 189, 248, 0.4);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --accent: #38bdf8;
+      --accent-rgb: 56, 189, 248;
+      --accent-secondary: #818cf8;
+      --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+      --card-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--surface-border);
+      --card-shadow-hover: 0 20px 40px -12px rgba(56, 189, 248, 0.2), 0 0 0 1px var(--surface-border-hover);
+      --modal-bg: rgba(9, 13, 22, 0.95);
+      --input-bg: rgba(15, 23, 42, 0.7);
+      --badge-bg: rgba(56, 189, 248, 0.12);
+      --badge-text: #7dd3fc;
+      --badge-border: rgba(56, 189, 248, 0.25);
+      --kbd-bg: rgba(255, 255, 255, 0.08);
+      --kbd-border: rgba(255, 255, 255, 0.18);
+    }
+
+    [data-theme="light"] {
+      --bg: #f8fafc;
+      --bg-gradient: radial-gradient(circle at 10% 10%, rgba(14, 165, 233, 0.08) 0%, transparent 40%),
+                         radial-gradient(circle at 90% 20%, rgba(99, 102, 241, 0.06) 0%, transparent 45%),
+                         #f8fafc;
+      --surface: rgba(255, 255, 255, 0.9);
+      --surface-hover: #ffffff;
+      --surface-border: rgba(226, 232, 240, 0.9);
+      --surface-border-hover: rgba(14, 165, 233, 0.5);
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-subtle: #94a3b8;
+      --accent: #0284c7;
+      --accent-rgb: 2, 132, 199;
+      --accent-secondary: #6366f1;
+      --accent-gradient: linear-gradient(135deg, #0284c7 0%, #6366f1 100%);
+      --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05), 0 0 0 1px var(--surface-border);
+      --card-shadow-hover: 0 16px 32px -8px rgba(2, 132, 199, 0.15), 0 0 0 1px var(--surface-border-hover);
+      --modal-bg: rgba(255, 255, 255, 0.98);
+      --input-bg: rgba(241, 245, 249, 0.8);
+      --badge-bg: rgba(2, 132, 199, 0.08);
+      --badge-text: #0369a1;
+      --badge-border: rgba(2, 132, 199, 0.2);
+      --kbd-bg: rgba(0, 0, 0, 0.06);
+      --kbd-border: rgba(0, 0, 0, 0.15);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", "Noto Sans", Helvetica, Arial, sans-serif;
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      line-height: 1.6;
+      transition: background 0.3s ease, color 0.3s ease;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    /* Container */
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* Navigation Bar */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: var(--surface);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 16px 0;
+      transition: all 0.2s ease;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 1.15rem;
+      letter-spacing: -0.02em;
+    }
+
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background: var(--accent-gradient);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(56, 189, 248, 0.3);
+    }
+
+    .brand-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-subtitle {
+      font-size: 0.72rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      border-radius: 9px;
+      padding: 8px 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .icon-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text-main);
+      border-color: var(--surface-border-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 64px 0 40px;
+      text-align: center;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 9999px;
+      background: var(--badge-bg);
+      border: 1px solid var(--badge-border);
+      color: var(--badge-text);
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.03em;
+      margin-bottom: 20px;
+      text-transform: uppercase;
+    }
+
+    .hero-badge .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+      box-shadow: 0 0 8px currentColor;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .gradient-text {
+      background: var(--accent-gradient);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero p {
+      font-size: clamp(1.05rem, 1.8vw, 1.25rem);
+      color: var(--text-muted);
+      max-width: 680px;
+      margin: 0 auto 36px;
+      line-height: 1.6;
+    }
+
+    /* Stats Banner */
+    .stats-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 32px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+
+    .stat-pill {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 18px;
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 9999px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-number {
+      font-weight: 700;
+      color: var(--text-main);
+      font-size: 1.05rem;
+    }
+
+    /* Controls Bar: Search & Filters */
+    .controls-bar {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 18px;
+      padding: 16px 20px;
+      margin-bottom: 36px;
+      backdrop-filter: blur(12px);
+      box-shadow: var(--card-shadow);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .controls-bar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .search-box {
+      position: relative;
+      flex: 1;
+      max-width: 480px;
+    }
+
+    .search-icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-subtle);
+      pointer-events: none;
+    }
+
+    .search-input {
+      width: 100%;
+      padding: 11px 40px 11px 42px;
+      background: var(--input-bg);
+      border: 1px solid var(--surface-border);
+      border-radius: 12px;
+      color: var(--text-main);
+      font-size: 0.95rem;
+      outline: none;
+      transition: all 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(var(--accent-rgb), 0.2);
+    }
+
+    .search-kbd {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: var(--kbd-bg);
+      border: 1px solid var(--kbd-border);
+      border-radius: 6px;
+      padding: 2px 7px;
+      font-size: 0.72rem;
+      color: var(--text-subtle);
+      font-family: inherit;
+    }
+
+    .filter-pills {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .filter-btn {
+      background: transparent;
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      border-radius: 9999px;
+      padding: 6px 14px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      background: var(--surface-hover);
+      color: var(--text-main);
+    }
+
+    .filter-btn.active {
+      background: var(--accent-gradient);
+      color: #fff;
+      border-color: transparent;
+      font-weight: 600;
+      box-shadow: 0 2px 10px rgba(56, 189, 248, 0.3);
+    }
+
+    /* Grid layout */
+    .presentations-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 28px;
+      margin-bottom: 72px;
+    }
+
+    @media (max-width: 480px) {
+      .presentations-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Presentation Card */
+    .slide-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 20px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      backdrop-filter: blur(14px);
+      box-shadow: var(--card-shadow);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+
+    .slide-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--surface-border-hover);
+      box-shadow: var(--card-shadow-hover);
+    }
+
+    .card-banner {
+      height: 120px;
+      position: relative;
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.2) 0%, rgba(99, 102, 241, 0.25) 100%);
+      display: flex;
+      align-items: flex-end;
+      padding: 16px 20px;
+      overflow: hidden;
+    }
+
+    .card-banner.banner-ai {
+      background: linear-gradient(135deg, rgba(168, 85, 247, 0.25) 0%, rgba(59, 130, 246, 0.3) 100%);
+    }
+
+    .banner-pattern {
+      position: absolute;
+      inset: 0;
+      opacity: 0.15;
+      background-image: radial-gradient(rgba(255, 255, 255, 0.8) 1px, transparent 1px);
+      background-size: 16px 16px;
+    }
+
+    .lesson-tag {
+      position: relative;
+      z-index: 1;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(0, 0, 0, 0.6);
+      color: #fff;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .card-badge-right {
+      position: absolute;
+      top: 14px;
+      right: 16px;
+      z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(0, 0, 0, 0.5);
+      color: #e2e8f0;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .card-body {
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.3;
+      margin-bottom: 12px;
+      letter-spacing: -0.02em;
+    }
+
+    .card-desc {
+      color: var(--text-muted);
+      font-size: 0.92rem;
+      line-height: 1.55;
+      margin-bottom: 20px;
+      flex: 1;
+    }
+
+    .topics-header {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-subtle);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 10px;
+    }
+
+    .topics-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .topic-pill {
+      background: var(--input-bg);
+      border: 1px solid var(--surface-border);
+      color: var(--text-muted);
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-size: 0.75rem;
+      font-weight: 500;
+    }
+
+    /* Actions */
+    .card-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      padding-top: 16px;
+      border-top: 1px solid var(--surface-border);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 0.88rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      text-align: center;
+      border: none;
+    }
+
+    .btn-primary {
+      background: var(--accent-gradient);
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+      transform: translateY(-1px);
+      filter: brightness(1.08);
+    }
+
+    .btn-secondary {
+      background: var(--input-bg);
+      border: 1px solid var(--surface-border);
+      color: var(--text-main);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-hover);
+      border-color: var(--surface-border-hover);
+      transform: translateY(-1px);
+    }
+
+    /* Keyboard Shortcuts Info Section */
+    .shortcuts-card {
+      background: var(--surface);
+      border: 1px solid var(--surface-border);
+      border-radius: 18px;
+      padding: 24px 28px;
+      margin-bottom: 64px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      backdrop-filter: blur(12px);
+    }
+
+    @media (min-width: 768px) {
+      .shortcuts-card {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+      }
+    }
+
+    .shortcuts-info h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .shortcuts-info p {
+      color: var(--text-muted);
+      font-size: 0.88rem;
+    }
+
+    .shortcuts-grid {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .shortcut-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.84rem;
+      color: var(--text-muted);
+    }
+
+    kbd {
+      background: var(--kbd-bg);
+      border: 1px solid var(--kbd-border);
+      border-bottom-width: 2px;
+      border-radius: 6px;
+      padding: 3px 8px;
+      font-family: inherit;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--surface-border);
+      padding: 32px 0;
+      color: var(--text-subtle);
+      font-size: 0.85rem;
+      text-align: center;
+    }
+
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 12px;
+    }
+
+    .footer-links a:hover {
+      color: var(--accent);
+    }
+
+    /* Presentation Modal (Preview) */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-window {
+      background: var(--bg);
+      border: 1px solid var(--surface-border);
+      border-radius: 20px;
+      width: 100%;
+      max-width: 1300px;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8);
+      transform: scale(0.97);
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .modal-overlay.open .modal-window {
+      transform: scale(1);
+    }
+
+    .modal-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--surface-border);
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+    }
+
+    .modal-title-group {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .modal-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .modal-close-btn:hover {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+    }
+
+    .modal-body {
+      flex: 1;
+      position: relative;
+      background: #000;
+    }
+
+    .modal-iframe {
+      width: 100%;
+      height: 100%;
+      border: none;
+      display: block;
+    }
+
+    .modal-hint-bar {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      padding: 6px 16px;
+      border-radius: 9999px;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #cbd5e1;
+      font-size: 0.78rem;
+      pointer-events: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0.85;
+    }
+
+    /* Empty state */
+    .empty-state {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 64px 20px;
+      color: var(--text-subtle);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <div class="brand">
+        <div class="brand-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+        </div>
+        <div class="brand-title">
+          <span>Lectures Slides</span>
+          <span class="brand-subtitle">Interactive Portal</span>
+        </div>
+      </div>
+
+      <div class="nav-actions">
+        <button class="icon-btn" id="themeToggle" title="Toggle Light / Dark mode" aria-label="Toggle theme">
+          <svg id="moonIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+          </svg>
+          <svg id="sunIcon" style="display:none" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="5"></circle>
+            <line x1="12" y1="1" x2="12" y2="3"></line>
+            <line x1="12" y1="21" x2="12" y2="23"></line>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+            <line x1="1" y1="12" x2="3" y2="12"></line>
+            <line x1="21" y1="12" x2="23" y2="12"></line>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+          </svg>
+          <span id="themeText">Theme</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <main class="container">
+    <section class="hero">
+      <div class="hero-badge">
+        <span class="dot"></span>
+        Curriculum Slide Decks
+      </div>
+      <h1>
+        Explore, Present & Learn <br>
+        with <span class="gradient-text">Interactive Slides</span>
+      </h1>
+      <p>
+        High-impact Marp presentation decks designed for modern learning. Launch in full-screen presentation mode, inspect presenter notes, or preview right inside this dashboard.
+      </p>
+
+      <!-- Stats Row -->
+      <div class="stats-row">
+        <div class="stat-pill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+          </svg>
+          <span>Available Lessons: <strong class="stat-number" id="totalLessonsCount">2</strong></span>
+        </div>
+        <div class="stat-pill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent-secondary)" stroke-width="2">
+            <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+            <line x1="8" y1="21" x2="16" y2="21"></line>
+            <line x1="12" y1="17" x2="12" y2="21"></line>
+          </svg>
+          <span>Total Slides: <strong class="stat-number">16</strong></span>
+        </div>
+        <div class="stat-pill">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <polyline points="12 6 12 12 14 14"></polyline>
+          </svg>
+          <span>Format: <strong class="stat-number" style="color:#10b981">Marp / Bespoke HTML</strong></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Controls: Search & Category Filters -->
+    <section class="controls-bar">
+      <div class="search-box">
+        <svg class="search-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input 
+          type="text" 
+          id="searchInput" 
+          class="search-input" 
+          placeholder="Search by topic, lesson, or keyword..."
+          aria-label="Search presentations"
+        />
+        <kbd class="search-kbd">/</kbd>
+      </div>
+
+      <div class="filter-pills" id="filterPills">
+        <button class="filter-btn active" data-filter="all">All Lessons</button>
+        <button class="filter-btn" data-filter="IT">IT & Society</button>
+        <button class="filter-btn" data-filter="AI">Artificial Intelligence</button>
+      </div>
+    </section>
+
+    <!-- Presentation Cards Grid -->
+    <section class="presentations-grid" id="cardsGrid">
+      <!-- Lesson 1-1 -->
+      <article class="slide-card" data-category="IT" data-search="lesson 1-1 development of it social transformation moore's law cashless society history emerging technologies pre-mechanical mechanical electronic modern it">
+        <div class="card-banner">
+          <div class="banner-pattern"></div>
+          <span class="lesson-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            Lesson 1-1
+          </span>
+          <div class="card-badge-right">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+            </svg>
+            9 Slides
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">Development of IT and Social Transformation</h2>
+          <p class="card-desc">
+            Discover the 5 historical eras of IT, explore exponential growth via Moore's Law, examine societal impacts (e.g. cashless society), and emerging tech frontiers.
+          </p>
+          <div class="topics-header">Core Concepts</div>
+          <div class="topics-list">
+            <span class="topic-pill">5 Eras of IT</span>
+            <span class="topic-pill">Moore's Law</span>
+            <span class="topic-pill">Cashless Society</span>
+            <span class="topic-pill">Emerging Tech</span>
+            <span class="topic-pill">Exam Worked Example</span>
+          </div>
+          <div class="card-actions">
+            <a href="Lesson%201-1%20Presentation.html" class="btn btn-primary" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              Present
+            </a>
+            <button class="btn btn-secondary" onclick="openPreview('Lesson 1-1 — Development of IT and Social Transformation', 'Lesson 1-1 Presentation.html')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              Preview
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Lesson 1-2 -->
+      <article class="slide-card" data-category="AI" data-search="lesson 1-2 how ai works artificial intelligence machine learning deep learning neural networks generative ai ethics bias hallucination considerations">
+        <div class="card-banner banner-ai">
+          <div class="banner-pattern"></div>
+          <span class="lesson-tag">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <polygon points="5 3 19 12 5 21 5 3"></polygon>
+            </svg>
+            Lesson 1-2
+          </span>
+          <div class="card-badge-right">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+              <line x1="3" y1="9" x2="21" y2="9"></line>
+            </svg>
+            7 Slides
+          </div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">How AI Works</h2>
+          <p class="card-desc">
+            Understand the fundamentals of Artificial Intelligence: hierarchical relationships with Machine Learning & Deep Learning, neural architectures, generative models, and critical ethical pitfalls.
+          </p>
+          <div class="topics-header">Core Concepts</div>
+          <div class="topics-list">
+            <span class="topic-pill">AI Hierarchy</span>
+            <span class="topic-pill">Machine Learning</span>
+            <span class="topic-pill">Neural Networks</span>
+            <span class="topic-pill">Generative AI</span>
+            <span class="topic-pill">AI Ethics & Bias</span>
+          </div>
+          <div class="card-actions">
+            <a href="Lesson%201-2%20Presentation.html" class="btn btn-primary" target="_blank" rel="noopener">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <polygon points="5 3 19 12 5 21 5 3"></polygon>
+              </svg>
+              Present
+            </a>
+            <button class="btn btn-secondary" onclick="openPreview('Lesson 1-2 — How AI Works', 'Lesson 1-2 Presentation.html')">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                <circle cx="12" cy="12" r="3"></circle>
+              </svg>
+              Preview
+            </button>
+          </div>
+        </div>
+      </article>
+
+      <!-- Empty State Container -->
+      <div id="noResults" class="empty-state" style="display: none;">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="margin-bottom: 12px; opacity: 0.6;">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <h3>No matching presentations found</h3>
+        <p style="margin-top: 6px;">Try adjusting your search terms or clearing the filter.</p>
+      </div>
+    </section>
+
+    <!-- Presentation Hotkey Quick Guide -->
+    <section class="shortcuts-card">
+      <div class="shortcuts-info">
+        <h3>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2">
+            <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+            <line x1="6" y1="8" x2="6.01" y2="8"></line>
+            <line x1="10" y1="8" x2="10.01" y2="8"></line>
+            <line x1="14" y1="8" x2="14.01" y2="8"></line>
+            <line x1="18" y1="8" x2="18.01" y2="8"></line>
+            <line x1="8" y1="12" x2="16" y2="12"></line>
+          </svg>
+          Presentation Navigation Shortcuts
+        </h3>
+        <p>Use these keyboard controls when presenting any slide deck</p>
+      </div>
+      <div class="shortcuts-grid">
+        <div class="shortcut-item">
+          <kbd>→</kbd> / <kbd>Space</kbd>
+          <span>Next Slide</span>
+        </div>
+        <div class="shortcut-item">
+          <kbd>←</kbd>
+          <span>Previous</span>
+        </div>
+        <div class="shortcut-item">
+          <kbd>F</kbd>
+          <span>Toggle Fullscreen</span>
+        </div>
+        <div class="shortcut-item">
+          <kbd>P</kbd>
+          <span>Presenter Notes</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Interactive Slide Preview Modal -->
+  <div class="modal-overlay" id="previewModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-window">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <div class="brand-icon" style="width: 28px; height: 28px; border-radius: 6px;">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <rect x="2" y="3" width="20" height="14" rx="2"></rect>
+              <line x1="8" y1="21" x2="16" y2="21"></line>
+              <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+          </div>
+          <span class="modal-title" id="modalTitle">Presentation Preview</span>
+        </div>
+        <div class="modal-actions">
+          <a id="modalExternalLink" href="#" target="_blank" rel="noopener" class="icon-btn" title="Open in new window">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
+              <polyline points="15 3 21 3 21 9"></polyline>
+              <line x1="10" y1="14" x2="21" y2="3"></line>
+            </svg>
+            <span>Open Tab</span>
+          </a>
+          <button class="modal-close-btn" onclick="closePreview()" title="Close preview (Esc)">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body">
+        <iframe id="previewIframe" class="modal-iframe" src="" title="Slide deck preview"></iframe>
+        <div class="modal-hint-bar">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"></circle>
+            <line x1="12" y1="16" x2="12" y2="12"></line>
+            <line x1="12" y1="8" x2="12.01" y2="8"></line>
+          </svg>
+          Click inside slides to use Space, Arrows, or 'F' for Fullscreen
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <p>&copy; 2026 Hesham Fawzy &bull; Baccalaureate Lecture Presentations</p>
+      <div class="footer-links">
+        <a href="README.md">Documentation</a>
+        <a href="LICENSE">License (MIT)</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Theme Management
+    const themeToggle = document.getElementById('themeToggle');
+    const moonIcon = document.getElementById('moonIcon');
+    const sunIcon = document.getElementById('sunIcon');
+    const themeText = document.getElementById('themeText');
+    const htmlElem = document.documentElement;
+
+    function setTheme(theme) {
+      htmlElem.setAttribute('data-theme', theme);
+      localStorage.setItem('theme_preference', theme);
+      if (theme === 'light') {
+        moonIcon.style.display = 'inline-block';
+        sunIcon.style.display = 'none';
+        themeText.textContent = 'Light';
+      } else {
+        moonIcon.style.display = 'none';
+        sunIcon.style.display = 'inline-block';
+        themeText.textContent = 'Dark';
+      }
+    }
+
+    const savedTheme = localStorage.getItem('theme_preference');
+    if (savedTheme) {
+      setTheme(savedTheme);
+    } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches) {
+      setTheme('light');
+    } else {
+      setTheme('dark');
+    }
+
+    themeToggle.addEventListener('click', () => {
+      const current = htmlElem.getAttribute('data-theme') || 'dark';
+      setTheme(current === 'dark' ? 'light' : 'dark');
+    });
+
+    // Modal Preview Functionality
+    const modal = document.getElementById('previewModal');
+    const iframe = document.getElementById('previewIframe');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalExternalLink = document.getElementById('modalExternalLink');
+
+    function openPreview(title, url) {
+      modalTitle.textContent = title;
+      iframe.src = url;
+      modalExternalLink.href = url;
+      modal.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closePreview() {
+      modal.classList.remove('open');
+      iframe.src = '';
+      document.body.style.overflow = '';
+    }
+
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) {
+        closePreview();
+      }
+    });
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && modal.classList.contains('open')) {
+        closePreview();
+      }
+      if (e.key === '/' && document.activeElement !== searchInput) {
+        e.preventDefault();
+        searchInput.focus();
+      }
+    });
+
+    // Live Search and Filter
+    const searchInput = document.getElementById('searchInput');
+    const cards = document.querySelectorAll('.slide-card');
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const noResults = document.getElementById('noResults');
+    let currentFilter = 'all';
+
+    function filterCards() {
+      const query = searchInput.value.toLowerCase().trim();
+      let visibleCount = 0;
+
+      cards.forEach(card => {
+        const category = card.getAttribute('data-category');
+        const searchData = (card.getAttribute('data-search') || '').toLowerCase();
+        const cardTitle = card.querySelector('.card-title').textContent.toLowerCase();
+        const cardDesc = card.querySelector('.card-desc').textContent.toLowerCase();
+        
+        const matchesCategory = (currentFilter === 'all') || (category === currentFilter);
+        const matchesQuery = !query || searchData.includes(query) || cardTitle.includes(query) || cardDesc.includes(query);
+
+        if (matchesCategory && matchesQuery) {
+          card.style.display = 'flex';
+          visibleCount++;
+        } else {
+          card.style.display = 'none';
+        }
+      });
+
+      noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+    }
+
+    searchInput.addEventListener('input', filterCards);
+
+    filterButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        filterButtons.forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        currentFilter = btn.getAttribute('data-filter');
+        filterCards();
+      });
+    });
+  </script>
+</body>
+</html>
