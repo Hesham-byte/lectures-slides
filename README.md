@@ -29,9 +29,9 @@ Access the live interactive presentation portal online:
 
 | Lesson | Title | Slides | Topics Covered | Live Presentation |
 | :--- | :--- | :---: | :--- | :---: |
-| **Lesson 1-1** | **Development of IT & Social Transformation** | 9 | 5 Eras of IT, Moore's Law, Cashless Society, Emerging Tech, Worked Examples | [Launch Deck](Lesson%201-1%20Presentation.html) |
-| **Lesson 1-2** | **How AI Works** | 7 | AI Hierarchy, Machine Learning, Deep Learning, Neural Networks, Generative AI & Ethics | [Launch Deck](Lesson%201-2%20Presentation.html) |
-| **Lesson 1-3** | **AI in Daily Life and Industry** | 7 | Daily Life AI, Industry Applications, What AI Excels At, Ethical & Black-Box Cautions | [Launch Deck](Lesson%201-3%20Presentation.html) |
+| **Lesson 1 - Chapter 1** | **Development of IT & Social Transformation** | 9 | 5 Eras of IT, Moore's Law, Cashless Society, Emerging Tech, Worked Examples | [Launch Deck](Lesson%201%20-%20Chapter%201%20Presentation.html) |
+| **Lesson 1 - Chapter 2** | **How AI Works** | 7 | AI Hierarchy, Machine Learning, Deep Learning, Neural Networks, Generative AI & Ethics | [Launch Deck](Lesson%201%20-%20Chapter%202%20Presentation.html) |
+| **Lesson 1 - Chapter 3** | **AI in Daily Life and Industry** | 7 | Daily Life AI, Industry Applications, What AI Excels At, Ethical & Black-Box Cautions | [Launch Deck](Lesson%201%20-%20Chapter%203%20Presentation.html) |
 
 ---
 
